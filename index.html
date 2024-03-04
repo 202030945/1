@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Paymongo Integration</title>
+</head>
+<body>
+
+<!-- Your HTML content goes here -->
+
+<button id="checkoutButton">Checkout</button>
+
+<script type="module" src="your-module-script.js">
+  document.addEventListener('DOMContentLoaded', function () {
+    // Add your Paymongo integration code here
+    const checkoutButton = document.getElementById('checkoutButton');
+
+    checkoutButton.addEventListener('click', function () {
+      const options = {
+        method: 'POST',
+        headers: {
+          accept: 'application/json',
+          'content-type': 'application/json',
+          authorization: 'Basic c2tfdGVzdF9MZUt2Z2FFbjhxa1pvS1BWRUZiSk0zZ1I6'
+        },
+        body: JSON.stringify({
+          data: {
+            attributes: {amount: 100000, description: 'Extraction', remarks: 'Single Tooth Extraction'}
+          }
+        })
+      };
+
+      fetch('https://api.paymongo.com/v1/links', options)
+        .then(response => response.json())
+        .then(response => {
+          console.log(response);
+
+          // Assuming the checkout_url is in the response
+          const checkoutUrl = response.data.attributes.url;
+
+          // Redirect the user to the checkout URL
+          window.location.href = checkoutUrl;
+        })
+        .catch(err => console.error(err));
+    });
+  });
+</script>
+
+</body>
+</html>
